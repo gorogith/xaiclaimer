@@ -1,0 +1,50 @@
+const clickElement = (element) => {
+    const event = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+    element.dispatchEvent(event);
+  };
+  
+  window.addEventListener('beforeunload', function (event) {
+    event.preventDefault();
+    event.returnValue = '';
+  });
+  
+  const buttons = document.querySelectorAll('.bg-xai-red');
+  
+  const attemptClaim = (buttons, index = 0) => {
+    // Mengecek apakah semua tombol sudah memiliki kelas 'bg-xai-black-lighter'
+    const allBlackLighter = Array.from(buttons).every(button => button.classList.contains('bg-xai-black-lighter'));
+  
+    if (allBlackLighter) {
+      console.log('Full Klaim . .');
+      return;
+    }
+  
+    if (document.querySelector('.claim-success')) {
+      console.log('Klaim berhasil!');
+      return;
+    }
+  
+    if (index < buttons.length) {
+      if (!buttons[index].classList.contains('bg-xai-black-lighter')) {
+        clickElement(buttons[index]);
+        console.log(`Klik nomor ${index + 1}`);
+      }
+  
+      setTimeout(() => {
+        attemptClaim(buttons, index + 1);
+      }, 500);
+    } else {
+      console.log('Cek Cek Cek.');
+      setTimeout(() => {
+        attemptClaim(buttons, 0);
+      }, 500);
+    }
+  };
+  
+  console.log('Sabar cuk sek tak klaim no  . . . . .');
+  attemptClaim(buttons);
+  
